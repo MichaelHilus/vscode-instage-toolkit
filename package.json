@@ -2,20 +2,26 @@
     "name": "instage-toolkit",
     "displayName": "InStage-Toolkit",
     "description": "A toolkit to debug InStage graphs and patterns.",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "publisher": "progresso-group",
     "author": {
         "name": "Michael Hilus"
     },
-    "icon": "./icon.png",
+    "icon": "https://raw.githubusercontent.com/progresso-group/vscode-instage-toolkit/master/icon.png",
     "engines": {
         "vscode": "^1.23.0"
     },
+    "repository": {
+		"type": "git",
+		"url": "https://github.com/progresso-group/vscode-instage-toolkit"
+	},
     "categories": [
+        "Programming Languages",
+        "Formatters",
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onDebug"
     ],
     "main": "./out/extension",
     "contributes": {
