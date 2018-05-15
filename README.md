@@ -1,2 +1,24 @@
-# vscode-instage-toolkit
-An extension for visual studio code to debug InStage graphs, contexts and patterns
+# InStage-Toolkit
+
+Inspect Graphs, Contexts and Patterns at runtime.
+
+## Features
+
+Right click on a graph, context or pattern variable while debugging. Pick "Inspect". The variable is evaluated and graphically represented in an own tab view.
+
+## Release Notes
+
+## 1.1.0
+Add support for variable properties
+
+## 1.0.3
+
+Fixed external dependencies problems
+
+### 1.0.1
+
+Updated changelog.
+
+### 1.0.0
+
+Initial release.
