@@ -7,7 +7,7 @@
     "author": {
         "name": "Michael Hilus"
     },
-    "icon": "https://raw.githubusercontent.com/progresso-group/vscode-instage-toolkit/master/icon.png",
+    "icon": "icon.png",
     "engines": {
         "vscode": "^1.23.0"
     },
