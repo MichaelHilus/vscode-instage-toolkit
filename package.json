@@ -1,0 +1,58 @@
+{
+    "name": "instage-toolkit",
+    "displayName": "InStage-Toolkit",
+    "description": "A toolkit to debug InStage graphs and patterns.",
+    "version": "1.0.3",
+    "publisher": "progresso-group",
+    "author": {
+        "name": "Michael Hilus"
+    },
+    "icon": "./icon.png",
+    "engines": {
+        "vscode": "^1.23.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.instageToolkit.inspect",
+                "title": "Inspect"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "extension.instageToolkit.inspect",
+                    "group": "navigation"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "extensionDependencies": [
+        "msjsdiag.debugger-for-chrome"
+    ],
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^7.0.43",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "vscode-debugprotocol": "^1.29.0"
+    },
+    "dependencies": {
+        "deflate-js": "^0.2.3"
+    }
+}
