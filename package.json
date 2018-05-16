@@ -2,7 +2,7 @@
     "name": "instage-toolkit",
     "displayName": "InStage-Toolkit",
     "description": "A toolkit to debug InStage graphs and patterns.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "progresso-group",
     "author": {
         "name": "Michael Hilus"
@@ -21,7 +21,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onDebug"
+        "*"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -29,6 +29,10 @@
             {
                 "command": "extension.instageToolkit.inspect",
                 "title": "Inspect"
+            },
+            {
+                "command": "extension.instageToolkit.openPowershell",
+                "title": "Open Folder in Powershell"
             }
         ],
         "menus": {
@@ -36,6 +40,12 @@
                 {
                     "command": "extension.instageToolkit.inspect",
                     "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extension.instageToolkit.openPowershell",
+                    "group": "navigation@50"
                 }
             ]
         }

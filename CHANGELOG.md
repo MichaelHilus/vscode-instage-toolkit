@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.2.0]
+- Add context menu to explorer to open Powershell in the selected folder
+
 ## [1.1.0]
 - Add support for variable properties
   - I.e. clicking on properties like `context` of `this.context` works now.

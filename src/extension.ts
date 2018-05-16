@@ -6,12 +6,19 @@ import { compress } from './utils/compression';
 import { TextDocumentContentProvider } from './textDocumentContentProvider';
 import { generatePlantUmlScript } from './utils/scriptGenerator';
 import { getTargetVariableName, getFrameIdOfDebugSession, getTargetVariableType, evaluateVariable } from './utils/debugging';
+import { getFolderPathOfPath } from './utils/filePath';
 
 export function activate(context: vscode.ExtensionContext) {
-    let provider = new TextDocumentContentProvider();
-    let providerDisposable = vscode.workspace.registerTextDocumentContentProvider('instage-toolkit', provider);
+    let openPowershellCommand = vscode.commands.registerCommand('extension.instageToolkit.openPowershell', (fileUri: vscode.Uri) => {
+        let folderPath = getFolderPathOfPath(fileUri.fsPath);
+        let terminal  = vscode.window.createTerminal('open powershell');
+        terminal.sendText(`start powershell -WorkingDirectory "${folderPath}"`);
+    });
 
-    let commandDisposable = vscode.commands.registerCommand('extension.instageToolkit.inspect', async () => {
+    let provider = new TextDocumentContentProvider();
+    let inspectProvider = vscode.workspace.registerTextDocumentContentProvider('instage-toolkit', provider);
+
+    let inspectCommand = vscode.commands.registerCommand('extension.instageToolkit.inspect', async () => {
     
         const variableName = getTargetVariableName();
         const frameId = await getFrameIdOfDebugSession();
@@ -24,8 +31,9 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.Three, variableName + ' - Preview');
     });
 
-    context.subscriptions.push(providerDisposable);
-    context.subscriptions.push(commandDisposable);
+    context.subscriptions.push(openPowershellCommand);
+    context.subscriptions.push(inspectProvider);
+    context.subscriptions.push(inspectCommand);
 }
 
 export function deactivate() {
