@@ -1,4 +1,9 @@
-import { PlantUmlNode, VariableType, Graph, Context, Pattern, GraphNode } from "../interfaces";
+import { VariableType } from "../models/variableType";
+import { PlantUmlNode } from "../models/plantUml";
+import { Graph, GraphNode } from "../models/graph";
+import { Context } from "../models/context";
+import { Pattern, MatchOperationItem, ReturnOperationItem } from "../models/pattern";
+
 
 export function generatePlantUmlScript(variableType: VariableType, variable: any): string {
     let plantUmlNodes: PlantUmlNode[] = [];
@@ -20,28 +25,26 @@ export function generatePlantUmlScript(variableType: VariableType, variable: any
             plantUmlNodes = mapNodesToPlantUmlNodes(patternVariable.graph.nodes);
                         
             let matchIndex = patternVariable.operations.keys.indexOf('MATCH');
-            let matchIndices = patternVariable.operations.values[matchIndex];
+            let matchOperations = patternVariable.operations.values[matchIndex] as MatchOperationItem[];
 
             let returnIndex = patternVariable.operations.keys.indexOf('RETURN');
-            let returnIndices = patternVariable.operations.values[returnIndex];
+            let returnOperations = patternVariable.operations.values[returnIndex] as ReturnOperationItem[];
 
-            Array.prototype.forEach.call(matchIndices, (matchIndex: (number | [number, number])) => {
-                if (matchIndex !== null) {
-                    if (typeof(matchIndex) === 'number') {
-                        plantUmlNodes[matchIndex as number].isBold = true;
-                    } else {
-                        plantUmlNodes[matchIndex[0]].relations[matchIndex[1]].isBold = true;
-                    }
+            matchOperations.forEach((matchOperation, index) => {
+                if (!isNaN(matchOperation.nodeIndex as number)) {
+                    plantUmlNodes[matchOperation.nodeIndex as number].isBold = true;
+                } else {
+                    plantUmlNodes[(matchOperation.relationIndex as [number, number])[0]]
+                        .relations[(matchOperation.relationIndex as [number, number])[1]].isBold = true;
                 }
             });
 
-            Array.prototype.forEach.call(returnIndices, (returnIndex: (number | [number, number])) => {
-                if (returnIndex !== null) {
-                    if (typeof(returnIndex) === 'number') {
-                        plantUmlNodes[returnIndex].isColored = true;
-                    } else {
-                        plantUmlNodes[returnIndex[0]].relations[returnIndex[1]].isColored = true;
-                    }
+            returnOperations.forEach((returnOperation, index) => {
+                if (!isNaN(returnOperation.nodeIndex as number)) {
+                    plantUmlNodes[returnOperation.nodeIndex as number].isColored = true;
+                } else {
+                    plantUmlNodes[(returnOperation.relationIndex as [number, number])[0]]
+                        .relations[(returnOperation.relationIndex as [number, number])[1]].isColored = true;
                 }
             });
 

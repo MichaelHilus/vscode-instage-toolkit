@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.0]
+- Upgrade to new pattern models structure
+
 ## [1.2.0]
 - Add context menu to explorer to open Powershell in the selected folder
 

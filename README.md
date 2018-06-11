@@ -8,6 +8,9 @@ Right click on a graph, context or pattern variable while debugging. Pick "Inspe
 
 ## Release Notes
 
+### [1.3.0]
+- Upgrade to new pattern models structure
+
 ### [1.2.0]
 - Add context menu to explorer to open Powershell in the selected folder
 

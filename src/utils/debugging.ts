@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { VariableType } from '../interfaces';
+import { VariableType } from '../models/variableType';
 import { DebugProtocol } from 'vscode-debugProtocol/lib/debugProtocol';
 
 export function getTargetVariableName(): string {
