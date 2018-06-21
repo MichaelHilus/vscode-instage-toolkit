@@ -25,11 +25,17 @@ export function generatePlantUmlScript(variableType: VariableType, variable: any
             plantUmlNodes = mapNodesToPlantUmlNodes(patternVariable.graph.nodes);
                         
             let matchIndex = patternVariable.operations.keys.indexOf('MATCH');
-            let matchOperations = patternVariable.operations.values[matchIndex] as MatchOperationItem[];
+            let matchOperations: MatchOperationItem[] = [];
+            if (matchIndex >= 0) {
+                matchOperations = patternVariable.operations.values[matchIndex] as MatchOperationItem[];
+            }
 
             let returnIndex = patternVariable.operations.keys.indexOf('RETURN');
-            let returnOperations = patternVariable.operations.values[returnIndex] as ReturnOperationItem[];
-
+            let returnOperations: ReturnOperationItem[] = [];
+            if (returnIndex >= 0) {
+                returnOperations = patternVariable.operations.values[returnIndex] as ReturnOperationItem[];
+            }
+            
             matchOperations.forEach((matchOperation, index) => {
                 if (!isNaN(matchOperation.nodeIndex as number)) {
                     plantUmlNodes[matchOperation.nodeIndex as number].isBold = true;
