@@ -4,7 +4,7 @@ export interface PlantUmlNode {
     name: string;
     label: string;
     isBold?: boolean;
-    isColored?: boolean;
+    color?: string;
     relations: PlantUmlRelation[];
 }
 
@@ -13,5 +13,5 @@ export interface PlantUmlRelation {
     name: string;
     targetNodeIndex: number;
     isBold?: boolean;
-    isColored?: boolean;
+    color?: string;
 }

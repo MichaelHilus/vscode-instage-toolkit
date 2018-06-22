@@ -2,7 +2,7 @@ import { VariableType } from "../models/variableType";
 import { PlantUmlNode } from "../models/plantUml";
 import { Graph, GraphNode } from "../models/graph";
 import { Context } from "../models/context";
-import { Pattern, MatchOperationItem, ReturnOperationItem } from "../models/pattern";
+import { Pattern, MatchOperationItem, ReturnOperationItem, CreateOperationItem, DeleteOperationItem } from "../models/pattern";
 
 
 export function generatePlantUmlScript(variableType: VariableType, variable: any): string {
@@ -35,6 +35,18 @@ export function generatePlantUmlScript(variableType: VariableType, variable: any
             if (returnIndex >= 0) {
                 returnOperations = patternVariable.operations.values[returnIndex] as ReturnOperationItem[];
             }
+
+            let createIndex = patternVariable.operations.keys.indexOf('CREATE');
+            let createOperations: CreateOperationItem[] = [];
+            if (createIndex >= 0) {
+                createOperations = patternVariable.operations.values[createIndex] as CreateOperationItem[];
+            }
+
+            let deleteIndex = patternVariable.operations.keys.indexOf('DELETE');
+            let deleteOperations: DeleteOperationItem[] = [];
+            if (deleteIndex >= 0) {
+                deleteOperations = patternVariable.operations.values[deleteIndex] as DeleteOperationItem[];
+            }
             
             matchOperations.forEach((matchOperation, index) => {
                 if (!isNaN(matchOperation.nodeIndex as number)) {
@@ -47,10 +59,28 @@ export function generatePlantUmlScript(variableType: VariableType, variable: any
 
             returnOperations.forEach((returnOperation, index) => {
                 if (!isNaN(returnOperation.nodeIndex as number)) {
-                    plantUmlNodes[returnOperation.nodeIndex as number].isColored = true;
+                    plantUmlNodes[returnOperation.nodeIndex as number].color = '#264F78';
                 } else {
                     plantUmlNodes[(returnOperation.relationIndex as [number, number])[0]]
-                        .relations[(returnOperation.relationIndex as [number, number])[1]].isColored = true;
+                        .relations[(returnOperation.relationIndex as [number, number])[1]].color = '#264F78';
+                }
+            });
+
+            createOperations.forEach((createOperation, index) => {
+                if (!isNaN(createOperation.nodeIndex as number)) {
+                    plantUmlNodes[createOperation.nodeIndex as number].color = '#2AA8B0';
+                } else {
+                    plantUmlNodes[(createOperation.relationIndex as [number, number])[0]]
+                        .relations[(createOperation.relationIndex as [number, number])[1]].color = '#2AA8B0';
+                }
+            });
+
+            deleteOperations.forEach((deleteOperation, index) => {
+                if (!isNaN(deleteOperation.nodeIndex as number)) {
+                    plantUmlNodes[deleteOperation.nodeIndex as number].color = '#A586C0';
+                } else {
+                    plantUmlNodes[(deleteOperation.relationIndex as [number, number])[0]]
+                        .relations[(deleteOperation.relationIndex as [number, number])[1]].color = '#A586C0';
                 }
             });
 
@@ -84,7 +114,7 @@ function generateScript(nodes: PlantUmlNode[]): string {
 
     let labelAttribute = (label: string, index: string) => `label=<${label === 'null' ? `<FONT color="#569CD6">${label}</FONT>` : label} <SUB><FONT color="#B5CEA8" face="times">[${index}]</FONT></SUB>>`;
     let boldAttributes = (isBold: boolean | undefined) => isBold ? ',penwidth="3",fontname="bold"' : '';
-    let colorAttributes = (isColored: boolean | undefined) => isColored ? ',style="filled",fillcolor="#264F78"' : '';
+    let colorAttributes = (color: string | undefined) => color ? `,style="filled",fillcolor="${color}",pencolor="${color}",color="${color}"` : '';
 
     return `
         @startuml
@@ -94,11 +124,11 @@ function generateScript(nodes: PlantUmlNode[]): string {
             edge [ fontsize=9, fontcolor="#CE9178" color="#CCCCCC" ];
 
             ${nodes.map(node => {
-                return `${node.name} [${labelAttribute(node.label, node.index.toString())}${boldAttributes(node.isBold)}${colorAttributes(node.isColored)}]`;
+                return `${node.name} [${labelAttribute(node.label, node.index.toString())}${boldAttributes(node.isBold)}${colorAttributes(node.color)}]`;
             }).join('\n')}
 
             ${nodes.map(node => node.relations.map(relation => {
-                return `${node.name}->${nodes[relation.targetNodeIndex].name} [${labelAttribute(relation.name, node.index + ', ' + relation.index)}${boldAttributes(relation.isBold)}${colorAttributes(relation.isColored)}]`;
+                return `${node.name}->${nodes[relation.targetNodeIndex].name} [${labelAttribute(relation.name, node.index + ', ' + relation.index)}${boldAttributes(relation.isBold)}${colorAttributes(relation.color)}]`;
             }).join('\n')).join('\n')}
         }
         @enduml`;

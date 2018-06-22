@@ -1,6 +1,6 @@
 import { Graph } from './graph';
 
-export type Operations = 'MATCH' | 'RETURN' | 'CREATE' | 'ORDER_BY' | 'SET';
+export type Operations = 'MATCH' | 'RETURN' | 'CREATE' | 'DELETE' | 'ORDER_BY' | 'SET';
 
 export type OperationItem = (MatchOperationItem | ReturnOperationItem | CreateOperationItem | DeleteOperationItem | SetOperationItem | OrderByOperationItem);
 
