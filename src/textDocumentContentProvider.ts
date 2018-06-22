@@ -23,6 +23,18 @@ export class TextDocumentContentProvider implements vscode.TextDocumentContentPr
                             margin-bottom: 16px;
                         }
 
+                        button {
+                            margin-top: 32px;
+                            margin-bottom: 16px;
+                            color: white;
+                            background-color: transparent;
+                            border: 1px #3C3C3C solid;
+                            outline: none;
+                            font-family: 'Segoe UI';
+                            font-size: 12px;
+                            padding: 4px 8px 4px 8px;
+                        }
+                        
                         .operation {
                             display: inline-block;
                             width: 60px;
@@ -102,6 +114,15 @@ export class TextDocumentContentProvider implements vscode.TextDocumentContentPr
                 }).join(', ');
                 return `<p><span class="${operation.name.toLowerCase()} operation">${operation.name}:</span> [${indices}]`;
             }).join(' ')}
+
+            <button onclick="document.getElementById('sourceDiv').style.visibility = 'visible'">View Source</button>
+            <div id="sourceDiv" style="visibility: collapse">
+                {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;graph: {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes: []<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                }
+            </div>
         </body>`;
 
         return content;
