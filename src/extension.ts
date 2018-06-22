@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
         const plantUmlScript = generatePlantUmlScript(variableType, evaluatedVariable);
         const compressedScript = compress(plantUmlScript);
 
-        const uri = vscode.Uri.parse(`instage-toolkit://graph-preview?${compressedScript}`);
+        const uri = vscode.Uri.parse(`instage-toolkit://graph-preview?${compressedScript}#${JSON.stringify({type: variableType, value: evaluatedVariable})}`);
         vscode.commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.Three, variableName + ' - Preview');
     });
 
