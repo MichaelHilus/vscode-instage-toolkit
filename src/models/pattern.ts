@@ -38,7 +38,7 @@ export interface Pattern {
     graph: Graph;
     operations: {
         keys: Operations[];
-        values: OperationItem[];
+        values: OperationItem[][];
     };
 }
 
