@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.4.0]
+- Add graph and pattern operations information to visualization
+
 ## [1.3.0]
 - Upgrade to new pattern models structure
 

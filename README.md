@@ -8,6 +8,9 @@ Right click on a graph, context or pattern variable while debugging. Pick "Inspe
 
 ## Release Notes
 
+### [1.4.0]
+- Add graph and pattern operations information to visualization
+
 ### [1.3.0]
 - Upgrade to new pattern models structure
 
