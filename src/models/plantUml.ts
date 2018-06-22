@@ -1,17 +1,18 @@
 
-export interface PlantUmlNode {
+export interface PlantUmlStyleInformation {
+    border?: string;
+    background?: string;
+}
+
+export interface PlantUmlNode extends PlantUmlStyleInformation {
     index: number;
     name: string;
     label: string;
-    isBold?: boolean;
-    color?: string;
     relations: PlantUmlRelation[];
 }
 
-export interface PlantUmlRelation {
+export interface PlantUmlRelation extends PlantUmlStyleInformation {
     index: number;
     name: string;
     targetNodeIndex: number;
-    isBold?: boolean;
-    color?: string;
 }
