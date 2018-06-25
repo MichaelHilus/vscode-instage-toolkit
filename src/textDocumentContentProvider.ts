@@ -114,14 +114,11 @@ export class TextDocumentContentProvider implements vscode.TextDocumentContentPr
                 }).join(', ');
                 return `<p><span class="${operation.name.toLowerCase()} operation">${operation.name}:</span> [${indices}]`;
             }).join(' ')}
-
-            <button onclick="document.getElementById('sourceDiv').style.visibility = 'visible'">View Source</button>
-            <div id="sourceDiv" style="visibility: collapse">
-                {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;graph: {<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes: []<br />
-                &nbsp;&nbsp;&nbsp;&nbsp;}<br />
-                }
+            <br />
+            <button onclick="document.getElementById('sourceDiv').style.display = 'block'">View Source</button>
+            <div id="sourceDiv" style="display: none">
+                Dto:<br />
+                ${JSON.stringify(value, null, 4).replace(/ /g, '\u00a0').split('\n').join('<br />')}
             </div>
         </body>`;
 
