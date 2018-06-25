@@ -8,6 +8,9 @@ Right click on a graph, context or pattern variable while debugging. Pick "Inspe
 
 ## Release Notes
 
+### [1.5.0]
+- Add json stringified representation of current debug variable
+
 ### [1.4.0]
 - Add graph and pattern operations information to visualization
 

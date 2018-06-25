@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.5.0]
+- Add json stringified representation of current debug variable
+
 ## [1.4.0]
 - Add graph and pattern operations information to visualization
 
