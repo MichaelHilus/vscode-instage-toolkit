@@ -97,7 +97,9 @@ export class TextDocumentContentProvider implements vscode.TextDocumentContentPr
             ${this.style}
             <p>Nodes: ${nodes}</p>
             <p>Relations: ${relations}</p>
-            <img src="https://plantuml.progresso-group.de/png/${uri.query}.png"></img>
+            <a href="https://plantuml.progresso-group.de/uml/${uri.query}" target="_blank">
+                <img src="https://plantuml.progresso-group.de/png/${uri.query}.png"></img>
+            </a>
             ${operations.map(operation => {
                 const indices = operation.indices.map(index => {
                     if (index.nodeIndex !== undefined) {
