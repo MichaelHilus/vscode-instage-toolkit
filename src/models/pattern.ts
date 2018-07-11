@@ -13,6 +13,7 @@ export interface NodeIndex {
 }
 
 export interface MatchOperationItem extends NodeIndex, RelationIndex {
+    isOptional?: boolean;
 }
 
 export interface ReturnOperationItem extends NodeIndex, RelationIndex {
