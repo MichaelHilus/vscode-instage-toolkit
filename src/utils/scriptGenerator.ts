@@ -30,10 +30,10 @@ export function generatePlantUmlScript(variableType: VariableType, variable: any
             const createOperations = getOperationByType<CreateOperationItem>( patternVariable.operations, 'CREATE');
             const deleteOperations = getOperationByType<DeleteOperationItem>( patternVariable.operations, 'DELETE');
 
-            setColorsOfElements(plantUmlNodes, matchOperations, '#9CDCFE', '#004E4E');
-            setColorsOfElements(plantUmlNodes, returnOperations, '#569CD6', '#264F78');
-            setColorsOfElements(plantUmlNodes, createOperations, '#2AA8B0');
-            setColorsOfElements(plantUmlNodes, deleteOperations, '#A586C0');
+            setStyleOfElements(plantUmlNodes, matchOperations, { borderColor: '#9CDCFE', backgroundColor: '#004E4E' });
+            setStyleOfElements(plantUmlNodes, returnOperations, { borderColor: '#569CD6', backgroundColor: '#264F78' });
+            setStyleOfElements(plantUmlNodes, createOperations,  { borderColor: '#2AA8B0' });
+            setStyleOfElements(plantUmlNodes, deleteOperations,  { borderColor:  '#A586C0' });
 
             break;
         }
@@ -53,17 +53,28 @@ function getOperationByType<T>(operations: { keys: Operations[]; values: Operati
     return operations.values[index] as T[];
 }
 
-function setColorsOfElements(elements: PlantUmlNode[], opertaions: OperationItem[], borderColor: string, backgroundColor?: string) {
-    opertaions.forEach(operation => {
+function setStyleOfElements(elements: PlantUmlNode[], operations: OperationItem[], style: { borderColor: string, backgroundColor?: string, dashed?: boolean }) {
+    operations.forEach(operation => {
         if (!isNaN(operation.nodeIndex as number)) {
-            elements[operation.nodeIndex as number].border = borderColor;
-            elements[operation.nodeIndex as number].background = backgroundColor;
+            const element = elements[operation.nodeIndex as number];
+
+            if ((operation as MatchOperationItem).isOptional)
+            {
+                element.dashed = true;
+            }
+            element.border = style.borderColor;
+            element.background = style.backgroundColor;
         } else {
             const relationOperation = operation as RelationIndex;
-            elements[(relationOperation.relationIndex as [number, number])[0]]
-                .relations[(relationOperation.relationIndex as [number, number])[1]].border = borderColor;
-                elements[(relationOperation.relationIndex as [number, number])[0]]
-                .relations[(relationOperation.relationIndex as [number, number])[1]].background = backgroundColor;
+            const element = elements[(relationOperation.relationIndex as [number, number])[0]]
+                .relations[(relationOperation.relationIndex as [number, number])[1]];
+
+            if ((operation as MatchOperationItem).isOptional)
+            {
+                element.dashed = true;
+            }
+            element.border = style.borderColor;
+            element.background = style.backgroundColor;
         }
     });
 }
@@ -78,9 +89,11 @@ function mapNodesToPlantUmlNodes(nodes: GraphNode[]): PlantUmlNode[] {
                 return {
                     index: relationIndex,
                     name: relation.name ? relation.name : 'null',
-                    targetNodeIndex: relation.targetNodeIndex
+                    targetNodeIndex: relation.targetNodeIndex,
+                    dashed: false
                 };
-            })
+            }),
+            dashed: false
         };
     });
 }
@@ -88,21 +101,26 @@ function mapNodesToPlantUmlNodes(nodes: GraphNode[]): PlantUmlNode[] {
 function generateScript(nodes: PlantUmlNode[]): string {
 
     let labelAttribute = (label: string, index: string) => `label=<${label === 'null' ? `<FONT color="#569CD6">${label}</FONT>` : label} <SUB><FONT color="#B5CEA8" face="times">[${index}]</FONT></SUB>>`;
-    let colorAttributes = (border?: string, background?: string) => (border ? `pencolor="${border}",color="${border}"` : '') + (background ? `,style="filled",fillcolor="${background}"` : '');
+    let colorAttributes = (border?: string, background?: string, dashed?: boolean) => {
+        const borderString = border ? `pencolor="${border}",color="${border}"` : '';
+        const backgroundString = background ? `,fillcolor="${background}"` : '';
+        const styleString = ((background || dashed) ? ',style="' : '') + (background ? 'filled' : '') + ((background && dashed) ? ',' : '')  + (dashed ? 'dashed' : '') + ((background || dashed) ? '"' : '');
+        return borderString + backgroundString + styleString;
+    }; 
 
     return `
         @startuml
         digraph graph1 {
-            graph [ fontsize=9, bgcolor="transparent" ];
+            graph [ fontsize=9, bgcolor="#1E1E1E" ];
             node [ penwidth=2, fontsize=9, fontcolor="#CE9178" color="#CCCCCC" ];
             edge [ penwidth=2, fontsize=9, fontcolor="#CE9178" color="#CCCCCC" ];
 
             ${nodes.map(node => {
-                return `${node.name} [${labelAttribute(node.label, node.index.toString())},${colorAttributes(node.border, node.background)}]`;
+                return `${node.name} [${labelAttribute(node.label, node.index.toString())},${colorAttributes(node.border, node.background, node.dashed)}]`;
             }).join('\n')}
 
             ${nodes.map(node => node.relations.map(relation => {
-                return `${node.name}->${nodes[relation.targetNodeIndex].name} [${labelAttribute(relation.name, node.index + ', ' + relation.index)},${colorAttributes(relation.border)}]`;
+                return `${node.name}->${nodes[relation.targetNodeIndex].name} [${labelAttribute(relation.name, node.index + ', ' + relation.index)},${colorAttributes(relation.border, undefined, relation.dashed)}]`;
             }).join('\n')).join('\n')}
         }
         @enduml`;

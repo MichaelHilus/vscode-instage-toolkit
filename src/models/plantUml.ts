@@ -1,6 +1,7 @@
 
 export interface PlantUmlStyleInformation {
     border?: string;
+    dashed: boolean;
     background?: string;
 }
 
