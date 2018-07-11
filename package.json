@@ -2,7 +2,7 @@
     "name": "instage-toolkit",
     "displayName": "InStage-Toolkit",
     "description": "A toolkit to debug InStage graphs and patterns.",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "publisher": "progresso-group",
     "author": {
         "name": "Michael Hilus"
