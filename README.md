@@ -8,6 +8,9 @@ Right click on a graph, context or pattern variable while debugging. Pick "Inspe
 
 ## Release Notes
 
+### [1.6.1]
+- Fix percent (%) sign handling in node or relation titles
+
 ### [1.6.0]
 - Add support for optional MATCH operations
 - Make graph image to be a link to the plantuml server
