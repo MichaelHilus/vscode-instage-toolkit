@@ -67,7 +67,8 @@ export class TextDocumentContentProvider implements vscode.TextDocumentContentPr
                     </style>`;
 
     public provideTextDocumentContent(uri: vscode.Uri): string {
-        let {type, value} = JSON.parse(uri.fragment) as {type: VariableType, value: any};
+        const fragment = uri.fragment.replace(new RegExp('_percent_', 'g'), '%');
+        const {type, value} = JSON.parse(fragment) as {type: VariableType, value: any};
 
         let operations: { name: string, indices: OperationItem[]}[] = [];
         let nodes = 0;
